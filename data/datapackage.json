@@ -1,0 +1,44 @@
+{
+  "name": "scheduling-primitives-test-contract",
+  "title": "Scheduling Primitives Cross-Platform Test Contract",
+  "description": "Canonical test fixtures for validating scheduling-primitives implementations across languages. Each fixture defines a calendar pattern, test scenarios, and expected results.",
+  "version": "1.0.0",
+  "licenses": [
+    {
+      "name": "MIT",
+      "path": "../LICENSE"
+    }
+  ],
+  "resources": [
+    {
+      "name": "simple",
+      "path": "fixtures/simple.json",
+      "description": "Standard Mon-Fri 08:00-17:00 with holiday and overtime exceptions",
+      "mediatype": "application/json"
+    },
+    {
+      "name": "multi_shift",
+      "path": "fixtures/multi_shift.json",
+      "description": "Two-shift pattern: 06:00-14:00, 14:00-22:00",
+      "mediatype": "application/json"
+    },
+    {
+      "name": "overnight",
+      "path": "fixtures/overnight.json",
+      "description": "Night shift: 22:00-06:00 (crosses midnight)",
+      "mediatype": "application/json"
+    },
+    {
+      "name": "resource_variety",
+      "path": "fixtures/resource_variety.json",
+      "description": "Multiple resources with different calendar patterns",
+      "mediatype": "application/json"
+    },
+    {
+      "name": "stress",
+      "path": "fixtures/stress.json",
+      "description": "20 operations across 4 resources for performance validation",
+      "mediatype": "application/json"
+    }
+  ]
+}

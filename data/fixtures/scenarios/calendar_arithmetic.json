@@ -1,0 +1,43 @@
+{
+  "add_minutes": [
+    {"id": "same_day",          "calendar": "standard", "start": "2025-01-06T09:00", "minutes":  60, "expected": "2025-01-06T10:00", "notes": "Mon 09:00 + 60 = Mon 10:00"},
+    {"id": "across_holiday",    "calendar": "holiday",  "start": "2025-01-06T16:30", "minutes":  60, "expected": "2025-01-08T08:30", "notes": "Mon 16:30->17:00 (30) + skip Tue + Wed 08:00->08:30 (30)"},
+    {"id": "across_weekend",    "calendar": "standard", "start": "2025-01-10T16:30", "minutes":  60, "expected": "2025-01-13T08:30", "notes": "Fri 16:30->17:00 (30) + skip Sat/Sun + Mon 08:00->08:30 (30)"},
+    {"id": "start_non_working", "calendar": "standard", "start": "2025-01-11T12:00", "minutes":  60, "expected": "2025-01-13T09:00", "notes": "Sat 12:00 (non-working) -> advance to Mon 08:00 + 60 = Mon 09:00"},
+    {"id": "mid_period",        "calendar": "standard", "start": "2025-01-06T12:00", "minutes":  30, "expected": "2025-01-06T12:30", "notes": "Mon 12:00 + 30 = Mon 12:30"},
+    {"id": "zero_minutes",      "calendar": "standard", "start": "2025-01-06T09:00", "minutes":   0, "expected": "2025-01-06T09:00", "notes": "0 minutes = no change"},
+    {"id": "exact_day",         "calendar": "standard", "start": "2025-01-06T08:00", "minutes": 540, "expected": "2025-01-06T17:00", "notes": "08:00 + 540 (full day) = 17:00"},
+    {"id": "day_plus_one",      "calendar": "standard", "start": "2025-01-06T08:00", "minutes": 541, "expected": "2025-01-07T08:01", "notes": "540 fills Mon, +1 spills to Tue 08:01"}
+  ],
+
+  "subtract_minutes": [
+    {"id": "same_day",       "calendar": "standard", "start": "2025-01-06T10:00", "minutes": 60, "expected": "2025-01-06T09:00", "notes": "Mon 10:00 - 60 = Mon 09:00"},
+    {"id": "across_holiday", "calendar": "holiday",  "start": "2025-01-08T08:30", "minutes": 60, "expected": "2025-01-06T16:30", "notes": "Wed 08:00->08:30 (30) + skip Tue + Mon 16:30->17:00 (30)"},
+    {"id": "non_working",    "calendar": "standard", "start": "2025-01-11T12:00", "minutes": 60, "expected": "2025-01-10T16:00", "notes": "Sat 12:00 (non-working) -> retreat to Fri 17:00 - 60 = Fri 16:00"},
+    {"id": "across_weekend", "calendar": "standard", "start": "2025-01-13T08:30", "minutes": 60, "expected": "2025-01-10T16:30", "notes": "Mon 08:00->08:30 (30) + skip Sat/Sun + Fri 16:30->17:00 (30)"},
+    {"id": "zero_minutes",   "calendar": "standard", "start": "2025-01-06T10:00", "minutes":  0, "expected": "2025-01-06T10:00", "notes": "0 minutes = no change"}
+  ],
+
+  "working_minutes_between": [
+    {"id": "single_day",   "calendar": "standard", "start": "2025-01-06T09:00", "end": "2025-01-06T12:00", "expected": 180,  "notes": "Mon 09:00-12:00 = 3 hours"},
+    {"id": "with_holiday", "calendar": "holiday",  "start": "2025-01-06T09:00", "end": "2025-01-08T12:00", "expected": 720,  "notes": "Mon 09:00-17:00(480) + Tue 0 + Wed 08:00-12:00(240) = 720"},
+    {"id": "multi_day",    "calendar": "standard", "start": "2025-01-06T08:00", "end": "2025-01-08T17:00", "expected": 1620, "notes": "Mon(540) + Tue(540) + Wed(540) = 1620"},
+    {"id": "same_time",    "calendar": "standard", "start": "2025-01-06T09:00", "end": "2025-01-06T09:00", "expected": 0,    "notes": "Same start and end = 0"},
+    {"id": "non_working",  "calendar": "standard", "start": "2025-01-11T08:00", "end": "2025-01-12T17:00", "expected": 0,    "notes": "Sat 08:00 to Sun 17:00 = 0 (weekend)"}
+  ],
+
+  "working_intervals_in_range": [
+    {"id": "single_day",   "calendar": "standard", "start": "2025-01-06T00:00", "end": "2025-01-07T00:00", "expected": [["2025-01-06T08:00", "2025-01-06T17:00"]], "notes": "Monday only"},
+    {"id": "with_holiday", "calendar": "holiday",  "start": "2025-01-06T00:00", "end": "2025-01-09T00:00", "expected": [["2025-01-06T08:00", "2025-01-06T17:00"], ["2025-01-08T08:00", "2025-01-08T17:00"]], "notes": "Mon+Wed, skip Tue holiday"},
+    {"id": "partial_day",  "calendar": "standard", "start": "2025-01-06T12:00", "end": "2025-01-07T00:00", "expected": [["2025-01-06T12:00", "2025-01-06T17:00"]], "notes": "Mon 12:00-17:00 (clipped start)"},
+    {"id": "non_working",  "calendar": "standard", "start": "2025-01-11T00:00", "end": "2025-01-13T00:00", "expected": [], "notes": "Sat-Sun weekend = no intervals"}
+  ],
+
+  "round_trips": [
+    {"id": "simple",         "calendar": "standard", "datetime": "2025-01-06T12:00", "minutes":   60, "notes": "Same-day 60-min round trip"},
+    {"id": "across_holiday", "calendar": "holiday",  "datetime": "2025-01-08T10:00", "minutes":  120, "notes": "Round trip across Tuesday holiday"},
+    {"id": "across_weekend", "calendar": "standard", "datetime": "2025-01-13T10:00", "minutes":  180, "notes": "Round trip across weekend"},
+    {"id": "large_duration", "calendar": "standard", "datetime": "2025-01-10T12:00", "minutes": 1000, "notes": "Multi-day 1000-min round trip"},
+    {"id": "reverse",        "calendar": "standard", "datetime": "2025-01-06T09:00", "minutes":  120, "direction": "reverse", "notes": "subtract(add(dt,n),n) == dt"}
+  ]
+}

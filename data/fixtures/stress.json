@@ -1,0 +1,77 @@
+{
+  "id": "stress",
+  "description": "Performance validation: 20 operations across 4 resources over a 4-week horizon",
+  "epoch": "2025-01-06T00:00:00",
+  "horizon": {
+    "start": "2025-01-06T00:00:00",
+    "end": "2025-02-03T00:00:00"
+  },
+  "resources": {
+    "MACH-A": {
+      "rules": {
+        "0": [["08:00", "17:00"]],
+        "1": [["08:00", "17:00"]],
+        "2": [["08:00", "17:00"]],
+        "3": [["08:00", "17:00"]],
+        "4": [["08:00", "17:00"]]
+      },
+      "exceptions": {}
+    },
+    "MACH-B": {
+      "rules": {
+        "0": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "1": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "2": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "3": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "4": [["06:00", "14:00"], ["14:00", "22:00"]]
+      },
+      "exceptions": {}
+    },
+    "MACH-C": {
+      "rules": {
+        "0": [["08:00", "17:00"]],
+        "1": [["08:00", "17:00"]],
+        "2": [["08:00", "17:00"]],
+        "3": [["08:00", "17:00"]],
+        "4": [["08:00", "17:00"]]
+      },
+      "exceptions": {}
+    },
+    "MACH-D": {
+      "rules": {
+        "0": [["08:00", "17:00"]],
+        "1": [["08:00", "17:00"]],
+        "2": [["08:00", "17:00"]],
+        "3": [["08:00", "17:00"]],
+        "4": [["08:00", "17:00"]]
+      },
+      "exceptions": {}
+    }
+  },
+  "tests": {
+    "allocations": [
+      {"id": "op01", "resource_id": "MACH-A", "operation_id": "OP-01", "earliest_start": 480, "work_units": 240, "allow_split": false},
+      {"id": "op02", "resource_id": "MACH-A", "operation_id": "OP-02", "earliest_start": 480, "work_units": 300, "allow_split": false},
+      {"id": "op03", "resource_id": "MACH-A", "operation_id": "OP-03", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op04", "resource_id": "MACH-A", "operation_id": "OP-04", "earliest_start": 480, "work_units": 180, "allow_split": false},
+      {"id": "op05", "resource_id": "MACH-A", "operation_id": "OP-05", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op06", "resource_id": "MACH-B", "operation_id": "OP-06", "earliest_start": 360, "work_units": 480, "allow_split": false},
+      {"id": "op07", "resource_id": "MACH-B", "operation_id": "OP-07", "earliest_start": 360, "work_units": 480, "allow_split": false},
+      {"id": "op08", "resource_id": "MACH-B", "operation_id": "OP-08", "earliest_start": 360, "work_units": 960, "allow_split": false},
+      {"id": "op09", "resource_id": "MACH-B", "operation_id": "OP-09", "earliest_start": 360, "work_units": 480, "allow_split": true},
+      {"id": "op10", "resource_id": "MACH-B", "operation_id": "OP-10", "earliest_start": 360, "work_units": 240, "allow_split": false},
+      {"id": "op11", "resource_id": "MACH-C", "operation_id": "OP-11", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op12", "resource_id": "MACH-C", "operation_id": "OP-12", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op13", "resource_id": "MACH-C", "operation_id": "OP-13", "earliest_start": 480, "work_units": 120, "allow_split": false},
+      {"id": "op14", "resource_id": "MACH-C", "operation_id": "OP-14", "earliest_start": 480, "work_units": 300, "allow_split": true},
+      {"id": "op15", "resource_id": "MACH-C", "operation_id": "OP-15", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op16", "resource_id": "MACH-D", "operation_id": "OP-16", "earliest_start": 480, "work_units": 240, "allow_split": false},
+      {"id": "op17", "resource_id": "MACH-D", "operation_id": "OP-17", "earliest_start": 480, "work_units": 540, "allow_split": false},
+      {"id": "op18", "resource_id": "MACH-D", "operation_id": "OP-18", "earliest_start": 480, "work_units": 180, "allow_split": false},
+      {"id": "op19", "resource_id": "MACH-D", "operation_id": "OP-19", "earliest_start": 480, "work_units": 360, "allow_split": true},
+      {"id": "op20", "resource_id": "MACH-D", "operation_id": "OP-20", "earliest_start": 480, "work_units": 120, "allow_split": false}
+    ],
+    "expected_all_scheduled": true,
+    "expected_no_overlaps": true
+  }
+}

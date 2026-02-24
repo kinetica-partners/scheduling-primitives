@@ -1,0 +1,106 @@
+{
+  "id": "resource_variety",
+  "description": "Three resources with different calendar patterns",
+  "epoch": "2025-01-06T00:00:00",
+  "horizon": {
+    "start": "2025-01-06T00:00:00",
+    "end": "2025-01-13T00:00:00"
+  },
+  "resources": {
+    "RES-STD": {
+      "description": "Standard 08:00-17:00 Mon-Fri",
+      "rules": {
+        "0": [["08:00", "17:00"]],
+        "1": [["08:00", "17:00"]],
+        "2": [["08:00", "17:00"]],
+        "3": [["08:00", "17:00"]],
+        "4": [["08:00", "17:00"]]
+      },
+      "exceptions": {}
+    },
+    "RES-2SHIFT": {
+      "description": "Two-shift 06:00-22:00 Mon-Fri",
+      "rules": {
+        "0": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "1": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "2": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "3": [["06:00", "14:00"], ["14:00", "22:00"]],
+        "4": [["06:00", "14:00"], ["14:00", "22:00"]]
+      },
+      "exceptions": {}
+    },
+    "RES-24H": {
+      "description": "24-hour operation Mon-Fri",
+      "rules": {
+        "0": [["00:00", "00:00"]],
+        "1": [["00:00", "00:00"]],
+        "2": [["00:00", "00:00"]],
+        "3": [["00:00", "00:00"]],
+        "4": [["00:00", "00:00"]]
+      },
+      "exceptions": {}
+    }
+  },
+  "tests": {
+    "working_minutes": [
+      {
+        "id": "std_day",
+        "resource_id": "RES-STD",
+        "start": "2025-01-06T00:00:00",
+        "end": "2025-01-07T00:00:00",
+        "expected": 540
+      },
+      {
+        "id": "two_shift_day",
+        "resource_id": "RES-2SHIFT",
+        "start": "2025-01-06T00:00:00",
+        "end": "2025-01-07T00:00:00",
+        "expected": 960
+      },
+      {
+        "id": "24h_day",
+        "resource_id": "RES-24H",
+        "start": "2025-01-06T00:00:00",
+        "end": "2025-01-07T00:00:00",
+        "expected": 1440
+      }
+    ],
+    "allocations": [
+      {
+        "id": "std_alloc",
+        "resource_id": "RES-STD",
+        "operation_id": "OP-S1",
+        "earliest_start": 480,
+        "work_units": 120,
+        "allow_split": false,
+        "expected_start": 480,
+        "expected_finish": 600,
+        "expected_spans": [[480, 600]]
+      },
+      {
+        "id": "two_shift_alloc",
+        "resource_id": "RES-2SHIFT",
+        "operation_id": "OP-T1",
+        "earliest_start": 360,
+        "work_units": 960,
+        "allow_split": false,
+        "expected_start": 360,
+        "expected_finish": 1320,
+        "expected_spans": [[360, 1320]],
+        "notes": "Mon 06:00-22:00, full day on two-shift resource"
+      },
+      {
+        "id": "24h_alloc",
+        "resource_id": "RES-24H",
+        "operation_id": "OP-H1",
+        "earliest_start": 0,
+        "work_units": 1440,
+        "allow_split": false,
+        "expected_start": 0,
+        "expected_finish": 1440,
+        "expected_spans": [[0, 1440]],
+        "notes": "Full 24h day on 24h resource"
+      }
+    ]
+  }
+}

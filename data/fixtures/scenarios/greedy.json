@@ -1,0 +1,39 @@
+{
+  "greedy_schedule": [
+    {
+      "id": "multi_resource",
+      "calendars": {"LATHE-1": "standard", "MILL-1": "standard"},
+      "operations": [
+        {"operation_id": "OP-1", "resource_id": "LATHE-1", "work_units": 240, "earliest_start": 480},
+        {"operation_id": "OP-2", "resource_id": "LATHE-1", "work_units": 300, "earliest_start": 480},
+        {"operation_id": "OP-3", "resource_id": "MILL-1", "work_units": 540, "earliest_start": 480},
+        {"operation_id": "OP-4", "resource_id": "MILL-1", "work_units": 120, "earliest_start": 480}
+      ],
+      "expected_count": 4,
+      "notes": "4 ops across 2 resources -- OP-1 fills LATHE Mon 08-12, OP-2 fills LATHE Mon 12-17, OP-3 fills MILL Mon 08-17, OP-4 goes to MILL Tue 08-10"
+    },
+    {
+      "id": "splittable_mixed",
+      "calendars": {"RES-1": "standard"},
+      "operations": [
+        {"operation_id": "OP-A", "resource_id": "RES-1", "work_units": 480, "earliest_start": 480},
+        {"operation_id": "OP-B", "resource_id": "RES-1", "work_units": 120, "earliest_start": 480, "allow_split": true}
+      ],
+      "expected_count": 2,
+      "expected_op_b_spans": 2,
+      "notes": "OP-A fills Mon 08-16, OP-B splittable gets Mon 16-17 (60) + Tue 08-09 (60)"
+    },
+    {
+      "id": "priority_order",
+      "calendars": {"RES-1": "standard"},
+      "operations": [
+        {"operation_id": "OP-HIGH", "resource_id": "RES-1", "work_units": 540, "earliest_start": 480},
+        {"operation_id": "OP-MED", "resource_id": "RES-1", "work_units": 540, "earliest_start": 480},
+        {"operation_id": "OP-LOW", "resource_id": "RES-1", "work_units": 540, "earliest_start": 480}
+      ],
+      "expected_count": 3,
+      "expected_starts": [480, 1920, 3360],
+      "notes": "3 full-day ops: OP-HIGH on Mon, OP-MED on Tue, OP-LOW on Wed"
+    }
+  ]
+}

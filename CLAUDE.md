@@ -2,43 +2,66 @@
 
 ## Project Overview
 
-**Purpose**: Develop an open source package for production scheduling primitives
+**Purpose**: Open source Python library providing mechanical foundations for finite capacity scheduling: working calendars, occupancy state, and time arithmetic.
 
-**Phase**: 1
+**Phase**: Pre-spec. Constitution ratified. Next step: run the speckit process to produce spec.md from user requirements.
 
-**Constitution**: `specs/constitution.md` — Read before any work. Governs all process, TDD, and quality requirements.
+**Constitution**: `specs/constitution.md` — Read before any work. Governs all process, TDD, design principles, and quality requirements.
 
 ## Technology Stack
 
 - **Language**: Python 3.12+
-- **Key Libraries**: 
-- **Storage**: 
-- **Package Management**: UV. No pip install without UV wrapper
+- **Testing**: pytest + Hypothesis
+- **Package Management**: UV. No `pip install` without UV wrapper.
+- **Dependencies**: None in core (stdlib only). Optional Polars (preferred) or pandas in loaders.
 
 ## Environment
 
-Always use venv
+Always use venv.
 
 ## Architecture
 
-{Structural overview of key directories and their single responsibilities. Not a full tree — just enough for the agent to navigate.}
+Greenfield — no code yet. Target structure from constitution:
+
+```
+src/scheduling_primitives/
+  calendar.py       Layer 1: WorkingCalendar (datetime-based, horizon-free)
+  occupancy.py      Layer 2: OccupancyBitmap, walk, allocate/deallocate (integer-based)
+  resolution.py     Boundary: TimeResolution (datetime ↔ int conversion)
+  debug.py          Visual verification (show_ functions, not imported by production code)
+  greedy.py         Reference scheduler (documentation in code form, not production)
+tests/
+data/               Test fixtures (JSON)
+specs/              Constitution, spec, plan, tasks
+docs/               Design references
+```
 
 ## Domain Context
 
-{For low-familiarity projects only. What domain this project operates in, what makes it unusual, and where the agent should expect its intuitions to be unreliable. Reference Constitution Principle V.}
+Production scheduling. The library sits below dispatching and optimisation — it provides the time arithmetic and capacity tracking that schedulers are built on. Key concepts: working calendars with shift patterns and exceptions, bitmap-based occupancy tracking, preemptive vs non-preemptive allocation. The agent should expect interval arithmetic edge cases to be the primary source of bugs.
 
 ## Learned Rules
 
-{Project-specific rules discovered during development. Accumulated from retrospectives and debugging sessions. Each rule should be one line.}
+(None yet — will accumulate from retrospectives)
 
 ## DO NOT
 
-{Short, sharp prohibitions specific to this project.}
+- Add capabilities not in the spec. Flag and wait.
+- Import datetime objects into Layer 2 code. The boundary is `from_calendar()`.
+- Use floats in engine code. Integer arithmetic only.
+- Use closed intervals. Everything is half-open `[begin, end)`.
+- Use `pip install` directly. UV only.
+- Silently work around a spec deficiency. Update the spec first.
+- Treat scope expansion as implicit. Ask explicitly.
 
 ## Current Focus
 
-{What the agent should expect to be working on. Updated when features change.}
+Run the speckit process: specify → clarify → plan → tasks. The v2 design doc is input, not the spec itself.
 
 ## Navigation
 
-{Pointers to key spec and documentation files.}
+- `specs/constitution.md` — Governing principles and process (read first)
+- `docs/scheduling-primitives-spec-v2.md` — Design reference document (input for spec process, NOT the active spec)
+- `specs/spec.md` — Active specification (does not exist yet)
+- `specs/plan.md` — Execution plan (does not exist yet)
+- `specs/tasks.md` — Task list (does not exist yet)

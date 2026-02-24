@@ -1,0 +1,112 @@
+{
+  "conversions": [
+    {
+      "id": "to_int_minute",
+      "resolution": "minute",
+      "datetime": "2025-01-06T09:00:00",
+      "epoch": "2025-01-06T00:00:00",
+      "expected_int": 540,
+      "notes": "Mon 09:00 = 540 min from epoch"
+    },
+    {
+      "id": "to_datetime_minute",
+      "resolution": "minute",
+      "int_value": 540,
+      "epoch": "2025-01-06T00:00:00",
+      "expected_datetime": "2025-01-06T09:00:00",
+      "notes": "540 min from epoch = Mon 09:00"
+    },
+    {
+      "id": "round_trip_minute",
+      "resolution": "minute",
+      "datetime": "2025-01-07T14:30:00",
+      "epoch": "2025-01-06T00:00:00",
+      "notes": "Tue 14:30 round-trip: to_int then to_datetime = identity"
+    },
+    {
+      "id": "round_trip_hour",
+      "resolution": "hour",
+      "datetime": "2025-01-07T14:00:00",
+      "epoch": "2025-01-06T00:00:00",
+      "notes": "Tue 14:00 round-trip at hour resolution"
+    },
+    {
+      "id": "negative_offset",
+      "resolution": "minute",
+      "datetime": "2025-01-06T09:00:00",
+      "epoch": "2025-01-06T12:00:00",
+      "expected_int": -180,
+      "notes": "09:00 with noon epoch = -180 min"
+    }
+  ],
+  "rejections": [
+    {
+      "id": "hour_not_aligned",
+      "resolution": "hour",
+      "datetime": "2025-01-06T14:30:00",
+      "epoch": "2025-01-06T00:00:00",
+      "error": "ValueError",
+      "match": "align",
+      "notes": "14:30 not aligned to hour boundary"
+    },
+    {
+      "id": "minute_has_seconds",
+      "resolution": "minute",
+      "datetime": "2025-01-06T09:00:30",
+      "epoch": "2025-01-06T00:00:00",
+      "error": "ValueError",
+      "match": "align",
+      "notes": "30 seconds not aligned to minute boundary"
+    },
+    {
+      "id": "aware_datetime",
+      "resolution": "minute",
+      "datetime": "2025-01-06T09:00:00",
+      "epoch": "2025-01-06T00:00:00",
+      "aware_field": "datetime",
+      "error": "TypeError|ValueError",
+      "notes": "Timezone-aware datetime rejected (FR-035)"
+    },
+    {
+      "id": "aware_epoch",
+      "resolution": "minute",
+      "datetime": "2025-01-06T09:00:00",
+      "epoch": "2025-01-06T00:00:00",
+      "aware_field": "epoch",
+      "error": "TypeError|ValueError",
+      "notes": "Timezone-aware epoch rejected (FR-035)"
+    }
+  ],
+  "predefined": [
+    {"id": "minute", "unit_seconds": 60, "label": "minute"},
+    {"id": "hour",   "unit_seconds": 3600, "label": "hour"}
+  ],
+  "multi_resolution": [
+    {
+      "id": "bitmap_size_ratio",
+      "calendar": "standard",
+      "minute_bits": 10080,
+      "hour_bits": 168,
+      "ratio": 60,
+      "notes": "Same 7-day horizon: minute bitmap is 60x larger than hour bitmap"
+    },
+    {
+      "id": "free_count_ratio",
+      "calendar": "standard",
+      "minute_free": 2700,
+      "hour_free": 45,
+      "notes": "5 working days x 9h = 45 hours = 2700 minutes of free capacity"
+    },
+    {
+      "id": "allocation_agreement",
+      "calendar": "standard",
+      "operation_id": "OP-RES",
+      "earliest_start_minute": 480,
+      "earliest_start_hour": 8,
+      "work_units_minute": 120,
+      "work_units_hour": 2,
+      "expected_finish_datetime": "2025-01-06T10:00:00",
+      "notes": "Mon 08:00 + 120min/2h = Mon 10:00 at both resolutions"
+    }
+  ]
+}

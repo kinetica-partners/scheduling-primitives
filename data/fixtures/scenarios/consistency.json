@@ -1,0 +1,37 @@
+{
+  "cross_layer": [
+    {
+      "id": "simple_within_day",
+      "calendar": "standard",
+      "start_datetime": "2025-01-06T08:00:00",
+      "start_offset_minute": 480,
+      "start_offset_hour": 8,
+      "work_units_minute": 120,
+      "work_units_hour": 2,
+      "expected_finish": "2025-01-06T10:00:00",
+      "notes": "Mon 08:00 + 120min = Mon 10:00 -- fits within single working day"
+    },
+    {
+      "id": "across_gap",
+      "calendar": "standard",
+      "start_datetime": "2025-01-06T16:00:00",
+      "start_offset_minute": 960,
+      "start_offset_hour": 16,
+      "work_units_minute": 120,
+      "work_units_hour": 2,
+      "expected_finish": "2025-01-07T09:00:00",
+      "notes": "Mon 16:00 + 120min crosses overnight gap -> Tue 09:00"
+    },
+    {
+      "id": "across_holiday",
+      "calendar": "holiday",
+      "start_datetime": "2025-01-06T16:00:00",
+      "start_offset_minute": 960,
+      "start_offset_hour": 16,
+      "work_units_minute": 120,
+      "work_units_hour": 2,
+      "expected_finish": "2025-01-08T09:00:00",
+      "notes": "Mon 16:00 + 120min skips Tue holiday -> Wed 09:00"
+    }
+  ]
+}

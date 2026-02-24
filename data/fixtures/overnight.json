@@ -1,0 +1,90 @@
+{
+  "id": "overnight",
+  "description": "Night shift: Mon-Fri 22:00-06:00 (8h per shift, crosses midnight)",
+  "epoch": "2025-01-06T00:00:00",
+  "horizon": {
+    "start": "2025-01-06T00:00:00",
+    "end": "2025-01-13T00:00:00"
+  },
+  "calendar": {
+    "rules": {
+      "0": [["22:00", "06:00"]],
+      "1": [["22:00", "06:00"]],
+      "2": [["22:00", "06:00"]],
+      "3": [["22:00", "06:00"]],
+      "4": [["22:00", "06:00"]]
+    },
+    "exceptions": {}
+  },
+  "tests": {
+    "forward_walk": [
+      {
+        "id": "within_shift",
+        "start": "2025-01-06T22:00:00",
+        "minutes": 60,
+        "expected": "2025-01-06T23:00:00"
+      },
+      {
+        "id": "across_midnight",
+        "start": "2025-01-06T23:00:00",
+        "minutes": 120,
+        "expected": "2025-01-07T01:00:00",
+        "notes": "Mon 23:00+120: 60min Mon 23-00 + 60min Tue 00-01"
+      },
+      {
+        "id": "full_shift",
+        "start": "2025-01-06T22:00:00",
+        "minutes": 480,
+        "expected": "2025-01-07T06:00:00",
+        "notes": "Mon 22:00 + 480min = Tue 06:00 (full 8h shift)"
+      }
+    ],
+    "working_minutes": [
+      {
+        "id": "monday_only",
+        "start": "2025-01-06T00:00:00",
+        "end": "2025-01-07T00:00:00",
+        "expected": 120,
+        "notes": "Mon has only 22:00-00:00 = 120 min (no prior day carryover on Mon)"
+      },
+      {
+        "id": "tuesday",
+        "start": "2025-01-07T00:00:00",
+        "end": "2025-01-08T00:00:00",
+        "expected": 480,
+        "notes": "Tue: 00:00-06:00 carryover (360) + 22:00-00:00 own (120) = 480"
+      },
+      {
+        "id": "weekend",
+        "start": "2025-01-11T00:00:00",
+        "end": "2025-01-13T00:00:00",
+        "expected": 360,
+        "notes": "Sat: 00:00-06:00 carryover from Fri = 360, no Sat/Sun own rules"
+      }
+    ],
+    "allocations": [
+      {
+        "id": "contiguous_night",
+        "operation_id": "OP-1",
+        "earliest_start": 1320,
+        "work_units": 120,
+        "allow_split": false,
+        "expected_start": 1320,
+        "expected_finish": 1440,
+        "expected_spans": [[1320, 1440]],
+        "notes": "Mon 22:00 + 120min = Tue 00:00 (offset 1320-1440)"
+      },
+      {
+        "id": "full_shift_alloc",
+        "operation_id": "OP-2",
+        "earliest_start": 1320,
+        "work_units": 480,
+        "allow_split": false,
+        "expected_start": 1320,
+        "expected_finish": 1800,
+        "expected_spans": [[1320, 1800]],
+        "notes": "Mon 22:00 to Tue 06:00 = 480 contiguous minutes"
+      }
+    ]
+  }
+}

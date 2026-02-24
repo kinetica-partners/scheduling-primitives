@@ -1,0 +1,39 @@
+{
+  "auto_extend": [
+    {
+      "id": "walk_triggers_extension",
+      "calendar": "standard",
+      "horizon_end": "2025-01-08T00:00",
+      "initial_bits": 2880,
+      "operation_id": "OP-EXT",
+      "earliest_start": 480,
+      "work_units": 1100,
+      "allow_split": true,
+      "notes": "Mon(540) + Tue(540) = 1080 < 1100 -> must extend to Wed"
+    },
+    {
+      "id": "extended_consistency",
+      "calendar": "standard",
+      "horizon_end": "2025-01-08T00:00",
+      "initial_bits": 2880,
+      "operation_id": "OP-EXT2",
+      "earliest_start": 480,
+      "work_units": 1100,
+      "allow_split": true,
+      "check_free_bit": 3390,
+      "notes": "Wed 08:30 (offset 2×1440+510=3390) should be free in extended region"
+    },
+    {
+      "id": "allocate_three_days",
+      "calendar": "standard",
+      "horizon_end": "2025-01-08T00:00",
+      "initial_bits": 2880,
+      "sequence": [
+        {"operation_id": "OP-A", "earliest_start": 480, "work_units": 540, "expected_start": 480},
+        {"operation_id": "OP-B", "earliest_start": 480, "work_units": 540, "expected_start": 1920},
+        {"operation_id": "OP-C", "earliest_start": 480, "work_units": 540, "expected_start_gte": 2880}
+      ],
+      "notes": "OP-A fills Mon, OP-B fills Tue, OP-C must extend to Wed+"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "non_splittable": [
+    {
+      "id": "fits_in_window",
+      "calendar": "standard",
+      "operation_id": "OP-1",
+      "earliest_start": 540,
+      "work_units": 120,
+      "expected_start": 540,
+      "expected_finish": 660,
+      "expected_spans": [[540, 660]],
+      "notes": "Mon 09:00 + 120 min -> Mon 11:00 contiguous"
+    },
+    {
+      "id": "skip_to_next_window",
+      "calendar": "standard",
+      "operation_id": "OP-2",
+      "earliest_start": 960,
+      "work_units": 480,
+      "expected_start": 1920,
+      "expected_finish": 2400,
+      "expected_spans": [[1920, 2400]],
+      "notes": "Mon 16:00 only 60 min left; need 480 contiguous -> Tue 08:00-16:00"
+    },
+    {
+      "id": "fits_exactly",
+      "calendar": "standard",
+      "operation_id": "OP-4",
+      "earliest_start": 480,
+      "work_units": 540,
+      "expected_start": 480,
+      "expected_finish": 1020,
+      "expected_spans": [[480, 1020]],
+      "notes": "Mon 08:00 + 540 = Mon 17:00 (exact day fill)"
+    }
+  ],
+
+  "non_splittable_deadline": [
+    {
+      "id": "deadline_exceeded",
+      "calendar": "standard",
+      "operation_id": "OP-3",
+      "earliest_start": 480,
+      "work_units": 600,
+      "deadline": 1020,
+      "expected_error": "deadline",
+      "notes": "Need 600 contiguous (> 540/day); deadline Mon 17:00 -> infeasible"
+    }
+  ],
+
+  "splittable": [
+    {
+      "id": "spans_shift_boundary",
+      "calendar": "standard",
+      "operation_id": "OP-S1",
+      "earliest_start": 990,
+      "work_units": 60,
+      "expected_start": 990,
+      "expected_finish": 1950,
+      "expected_spans": [[990, 1020], [1920, 1950]],
+      "notes": "Mon 16:30-17:00 (30 min) + Tue 08:00-08:30 (30 min)"
+    },
+    {
+      "id": "single_span",
+      "calendar": "standard",
+      "operation_id": "OP-S3",
+      "earliest_start": 540,
+      "work_units": 60,
+      "expected_start": 540,
+      "expected_finish": 600,
+      "expected_spans": [[540, 600]],
+      "notes": "Mon 09:00-10:00 fits in one span"
+    }
+  ],
+
+  "splittable_deadline": [
+    {
+      "id": "deadline_exceeded",
+      "calendar": "standard",
+      "operation_id": "OP-S4",
+      "earliest_start": 480,
+      "work_units": 600,
+      "deadline": 1020,
+      "expected_error": "deadline",
+      "notes": "Need 600 > 540 available; deadline Mon 17:00 -> infeasible"
+    }
+  ],
+
+  "min_split": [
+    {
+      "id": "skips_small_fragments",
+      "calendar": "standard",
+      "operation_id": "OP-S2",
+      "pre_allocate": {"operation_id": "BLOCK", "earliest_start": 480, "work_units": 530},
+      "earliest_start": 480,
+      "work_units": 60,
+      "min_split": 15,
+      "expected_first_span_start_gte": 1920,
+      "notes": "Mon: 530 allocated from 08:00 leaves 10 min (1010-1020); min_split=15 skips it -> Tue"
+    }
+  ]
+}

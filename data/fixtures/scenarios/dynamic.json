@@ -1,0 +1,49 @@
+{
+  "capacity_removal": [
+    {
+      "id": "breakdown_free_time",
+      "calendar": "standard",
+      "start_offset": 540,
+      "end_offset": 660,
+      "notes": "Mon 09:00-11:00 removal on free time -> bits set to 0, no conflicts"
+    },
+    {
+      "id": "breakdown_overlapping_allocation",
+      "calendar": "standard",
+      "pre_allocate": {"operation_id": "OP-1", "earliest_start": 480, "work_units": 240},
+      "start_offset": 540,
+      "end_offset": 660,
+      "notes": "Mon 09:00-11:00 removal overlaps OP-1 (Mon 08:00-12:00) -> conflict detected"
+    },
+    {
+      "id": "breakdown_non_working",
+      "calendar": "standard",
+      "start_offset": 0,
+      "end_offset": 480,
+      "notes": "Mon 00:00-08:00 removal on non-working time -> no change, no conflicts"
+    }
+  ],
+  "capacity_addition": [
+    {
+      "id": "overtime_non_working",
+      "calendar": "standard",
+      "start_offset": 7200,
+      "end_offset": 7440,
+      "notes": "Sat 00:00+0 to 00:00+240 (Sat 00:00-04:00) -> bits set to 1 (free)"
+    },
+    {
+      "id": "overtime_already_working",
+      "calendar": "standard",
+      "start_offset": 540,
+      "end_offset": 660,
+      "notes": "Mon 09:00-11:00 addition on already-working time -> no change (already free)"
+    },
+    {
+      "id": "overtime_partial_overlap",
+      "calendar": "standard",
+      "start_offset": 960,
+      "end_offset": 1200,
+      "notes": "Mon 16:00-20:00 addition extends past 17:00 end -> 16:00-17:00 unchanged, 17:00-20:00 now free"
+    }
+  ]
+}

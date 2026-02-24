@@ -1,0 +1,82 @@
+{
+  "records": [
+    {
+      "id": "split_spans",
+      "description": "Two spans with gap, sum = work_units",
+      "operation_id": "OP-1",
+      "resource_id": "M1",
+      "start": 100,
+      "finish": 200,
+      "work_units": 60,
+      "allow_split": true,
+      "spans": [[100, 130], [170, 200]],
+      "expected_wall_time": 100,
+      "expected_span_sum": 60,
+      "notes": "wall_time=100 (includes 40-min gap), span_sum=30+30=60"
+    },
+    {
+      "id": "single_contiguous",
+      "description": "Single contiguous span, non-split",
+      "operation_id": "OP-2",
+      "resource_id": "M1",
+      "start": 540,
+      "finish": 660,
+      "work_units": 120,
+      "allow_split": false,
+      "spans": [[540, 660]],
+      "expected_wall_time": 120,
+      "expected_span_sum": 120,
+      "notes": "Mon 09:00-11:00 contiguous"
+    },
+    {
+      "id": "complete_allocation",
+      "description": "Allocation meeting required work_units",
+      "operation_id": "OP-3",
+      "resource_id": "M1",
+      "start": 0,
+      "finish": 60,
+      "work_units": 60,
+      "allow_split": false,
+      "spans": [[0, 60]],
+      "expected_wall_time": 60,
+      "expected_span_sum": 60,
+      "is_complete_at": [50, 60],
+      "is_incomplete_at": [61, 120],
+      "notes": "Complete at 60, incomplete at 61+"
+    },
+    {
+      "id": "partial_allocation",
+      "description": "Allocation below required work_units",
+      "operation_id": "OP-4",
+      "resource_id": "M1",
+      "start": 0,
+      "finish": 30,
+      "work_units": 30,
+      "allow_split": false,
+      "spans": [[0, 30]],
+      "expected_wall_time": 30,
+      "expected_span_sum": 30,
+      "is_complete_at": [30],
+      "is_incomplete_at": [60],
+      "notes": "Only 30 of required 60 units"
+    }
+  ],
+  "errors": [
+    {
+      "id": "deadline",
+      "operation_id": "OP-FAIL",
+      "work_units_remaining": 30,
+      "work_units_requested": 60,
+      "reason": "deadline",
+      "notes": "Deadline exceeded: 30 of 60 remaining"
+    },
+    {
+      "id": "horizon",
+      "operation_id": "OP-H",
+      "work_units_remaining": 100,
+      "work_units_requested": 100,
+      "reason": "horizon",
+      "notes": "Horizon exhausted: all 100 remaining"
+    }
+  ]
+}

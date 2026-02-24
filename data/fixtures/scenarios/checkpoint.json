@@ -1,0 +1,51 @@
+{
+  "checkpoint_restore": [
+    {
+      "id": "single_undo",
+      "calendar": "standard",
+      "allocate": {"operation_id": "OP-1", "earliest_start": 480, "work_units": 120},
+      "notes": "Checkpoint before allocate, restore undoes it -> bits identical to snapshot"
+    },
+    {
+      "id": "multiple_undo",
+      "calendar": "standard",
+      "sequence": [
+        {"operation_id": "OP-1", "earliest_start": 480, "work_units": 120},
+        {"operation_id": "OP-2", "earliest_start": 480, "work_units": 120}
+      ],
+      "notes": "Checkpoint before two allocates, restore undoes both"
+    },
+    {
+      "id": "restore_to_earlier",
+      "calendar": "standard",
+      "steps": [
+        {"action": "checkpoint", "label": "snap_0"},
+        {"action": "allocate", "operation_id": "OP-1", "earliest_start": 480, "work_units": 120},
+        {"action": "checkpoint", "label": "snap_1"},
+        {"action": "allocate", "operation_id": "OP-2", "earliest_start": 480, "work_units": 120},
+        {"action": "restore", "label": "snap_0"}
+      ],
+      "notes": "Two checkpoints; restoring to snap_0 undoes both allocations"
+    },
+    {
+      "id": "keep_allocation",
+      "calendar": "standard",
+      "allocate": {"operation_id": "OP-1", "earliest_start": 540, "work_units": 60},
+      "notes": "Checkpoint after allocate, restore to post-allocation snapshot preserves the allocation"
+    }
+  ],
+  "copy": [
+    {
+      "id": "deep_independence",
+      "calendar": "standard",
+      "allocate_on_copy": {"operation_id": "OP-COPY", "earliest_start": 480, "work_units": 120},
+      "notes": "Copy bitmap, allocate on copy -> original unaffected"
+    },
+    {
+      "id": "mutation_isolation",
+      "calendar": "standard",
+      "allocate_on_original": {"operation_id": "OP-ORIG", "earliest_start": 480, "work_units": 60},
+      "notes": "Copy bitmap, allocate on original -> copy unaffected"
+    }
+  ]
+}

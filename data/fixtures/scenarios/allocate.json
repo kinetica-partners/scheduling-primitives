@@ -1,0 +1,55 @@
+{
+  "allocate": [
+    {
+      "id": "bits_marked",
+      "calendar": "standard",
+      "operation_id": "OP-1",
+      "earliest_start": 540,
+      "work_units": 120,
+      "expected_start": 540,
+      "expected_finish": 660,
+      "expected_spans": [[540, 660]],
+      "check_bits_zero_range": [540, 660],
+      "notes": "Mon 09:00-11:00 -> bits 540-660 marked as occupied (0)"
+    },
+    {
+      "id": "sequential",
+      "calendar": "standard",
+      "sequence": [
+        {"operation_id": "OP-1", "earliest_start": 480, "work_units": 120, "expected_start": 480, "expected_finish": 600},
+        {"operation_id": "OP-2", "earliest_start": 480, "work_units": 120, "expected_start": 600, "expected_finish": 720}
+      ],
+      "notes": "Mon: OP-1 gets 08:00-10:00, OP-2 gets 10:00-12:00"
+    }
+  ],
+
+  "deallocate": [
+    {
+      "id": "restore_single",
+      "calendar": "standard",
+      "operation_id": "OP-1",
+      "earliest_start": 540,
+      "work_units": 120,
+      "notes": "Allocate then deallocate -> bits identical to initial state"
+    },
+    {
+      "id": "restore_multiple_reverse",
+      "calendar": "standard",
+      "sequence": [
+        {"operation_id": "OP-1", "earliest_start": 480, "work_units": 60},
+        {"operation_id": "OP-2", "earliest_start": 480, "work_units": 60}
+      ],
+      "notes": "Allocate OP-1 + OP-2, deallocate in reverse -> bits identical to initial"
+    },
+    {
+      "id": "splittable_restore",
+      "calendar": "standard",
+      "operation_id": "OP-S",
+      "earliest_start": 990,
+      "work_units": 60,
+      "allow_split": true,
+      "expected_span_count": 2,
+      "notes": "Mon 16:30-17:00 + Tue 08:00-08:30; deallocate restores all spans"
+    }
+  ]
+}

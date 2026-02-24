@@ -1,0 +1,22 @@
+{
+  "bitmap_construction": [
+    {
+      "id": "week_standard",
+      "calendar": "standard",
+      "horizon_start": "2025-01-06T00:00",
+      "horizon_end": "2025-01-13T00:00",
+      "expected_total_bits": 10080,
+      "expected_free_bits": 2700,
+      "expected_horizon_begin": 0,
+      "expected_horizon_end": 10080,
+      "notes": "7 days × 1440 min = 10080 total; 5 days × 540 min = 2700 free"
+    }
+  ],
+
+  "bit_ranges": [
+    {"id": "mon_working",    "calendar": "standard", "range_start": 480,  "range_end": 1020, "expected_value": 1, "notes": "Mon 08:00-17:00 = free (working)"},
+    {"id": "mon_night",      "calendar": "standard", "range_start": 0,    "range_end": 480,  "expected_value": 0, "notes": "Mon 00:00-08:00 = non-working"},
+    {"id": "sat_all_day",    "calendar": "standard", "range_start": 7200, "range_end": 8640, "expected_value": 0, "notes": "Sat (day_offset 7200) all 1440 min = non-working"},
+    {"id": "tue_holiday",    "calendar": "holiday",  "range_start": 1920, "range_end": 2460, "expected_value": 0, "notes": "Tue 08:00-17:00 with holiday = non-working"}
+  ]
+}

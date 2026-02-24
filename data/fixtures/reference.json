@@ -1,0 +1,38 @@
+{
+  "_comment": "Master reference table for the canonical test week: Mon 2025-01-06 to Sun 2025-01-12. All offsets are minutes from epoch.",
+  "epoch": "2025-01-06T00:00:00",
+  "minutes_per_day": 1440,
+  "work_day_minutes": 540,
+
+  "days": [
+    {"name": "mon",      "date": "2025-01-06", "weekday": 0, "day_offset": 0},
+    {"name": "tue",      "date": "2025-01-07", "weekday": 1, "day_offset": 1440},
+    {"name": "wed",      "date": "2025-01-08", "weekday": 2, "day_offset": 2880},
+    {"name": "thu",      "date": "2025-01-09", "weekday": 3, "day_offset": 4320},
+    {"name": "fri",      "date": "2025-01-10", "weekday": 4, "day_offset": 5760},
+    {"name": "sat",      "date": "2025-01-11", "weekday": 5, "day_offset": 7200},
+    {"name": "sun",      "date": "2025-01-12", "weekday": 6, "day_offset": 8640},
+    {"name": "next_mon", "date": "2025-01-13", "weekday": 0, "day_offset": 10080}
+  ],
+
+  "times": [
+    {"label": "00:00", "minutes":    0},
+    {"label": "06:00", "minutes":  360},
+    {"label": "08:00", "minutes":  480},
+    {"label": "08:01", "minutes":  481},
+    {"label": "08:30", "minutes":  510},
+    {"label": "09:00", "minutes":  540},
+    {"label": "10:00", "minutes":  600},
+    {"label": "11:00", "minutes":  660},
+    {"label": "12:00", "minutes":  720},
+    {"label": "12:30", "minutes":  750},
+    {"label": "14:00", "minutes":  840},
+    {"label": "14:30", "minutes":  870},
+    {"label": "16:00", "minutes":  960},
+    {"label": "16:30", "minutes":  990},
+    {"label": "17:00", "minutes": 1020},
+    {"label": "18:00", "minutes": 1080},
+    {"label": "22:00", "minutes": 1320},
+    {"label": "23:00", "minutes": 1380}
+  ]
+}

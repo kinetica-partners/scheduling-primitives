@@ -1,0 +1,100 @@
+[
+  {
+    "id": "single_period",
+    "calendar": "standard",
+    "date": "2025-01-06",
+    "expected": [["08:00", "17:00"]],
+    "notes": "Monday standard working day"
+  },
+  {
+    "id": "split_shift",
+    "calendar": "split_shift",
+    "date": "2025-01-06",
+    "expected": [["06:00", "10:00"], ["14:00", "18:00"]],
+    "notes": "Monday two-period split shift"
+  },
+  {
+    "id": "non_working_sat",
+    "calendar": "standard",
+    "date": "2025-01-11",
+    "expected": [],
+    "notes": "Saturday — no rule defined"
+  },
+  {
+    "id": "non_working_sun",
+    "calendar": "standard",
+    "date": "2025-01-12",
+    "expected": [],
+    "notes": "Sunday — no rule defined"
+  },
+  {
+    "id": "overnight_same_day",
+    "calendar": "overnight",
+    "date": "2025-01-06",
+    "expected_contains": ["22:00", "00:00"],
+    "notes": "Monday gets 22:00-midnight from its own overnight rule"
+  },
+  {
+    "id": "overnight_carryover",
+    "calendar": "overnight",
+    "date": "2025-01-07",
+    "expected_contains": ["00:00", "06:00"],
+    "notes": "Tuesday gets midnight-06:00 carried over from Monday rule"
+  },
+  {
+    "id": "overnight_consecutive",
+    "calendar": "overnight_consecutive",
+    "date": "2025-01-07",
+    "expected_contains_all": [["00:00", "06:00"], ["22:00", "00:00"]],
+    "notes": "Tuesday gets Mon carryover (00:00-06:00) + own shift (22:00-00:00)"
+  },
+  {
+    "id": "overnight_midnight_edge",
+    "calendar": "overnight_midnight",
+    "date": "2025-01-06",
+    "expected_contains": ["23:00", "00:00"],
+    "notes": "Monday 23:00-midnight edge case"
+  },
+  {
+    "id": "holiday_full_day",
+    "calendar": "simple",
+    "date": "2025-01-07",
+    "expected": [],
+    "notes": "Tuesday holiday — zero working time"
+  },
+  {
+    "id": "overtime_non_working",
+    "calendar": "simple",
+    "date": "2025-01-11",
+    "expected": [["10:00", "14:00"]],
+    "notes": "Saturday overtime 10:00-14:00"
+  },
+  {
+    "id": "normal_unaffected",
+    "calendar": "simple",
+    "date": "2025-01-06",
+    "expected": [["08:00", "17:00"]],
+    "notes": "Monday unaffected by Tue holiday or Sat overtime"
+  },
+  {
+    "id": "partial_day",
+    "calendar": "partial_day",
+    "date": "2025-01-06",
+    "expected": [["08:00", "12:00"]],
+    "notes": "Monday half-day: remove full day, add 08:00-12:00"
+  },
+  {
+    "id": "multi_exception",
+    "calendar": "multi_exception",
+    "date": "2025-01-06",
+    "expected": [["09:00", "12:00"], ["14:00", "16:00"]],
+    "notes": "Monday: remove day, add 09:00-12:00 + 14:00-16:00"
+  },
+  {
+    "id": "holiday_on_non_working",
+    "calendar": "saturday_holiday",
+    "date": "2025-01-11",
+    "expected": [],
+    "notes": "Holiday on Saturday (already non-working) = no-op"
+  }
+]
