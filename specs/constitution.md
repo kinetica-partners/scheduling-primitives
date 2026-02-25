@@ -1,8 +1,9 @@
 # Constitution: scheduling-primitives
 
-**Version**: 1.1.0
+**Version**: 2.0.0
 **Ratified**: 2026-02-23
 **Amended**: 2026-02-24 — Slimmed: moved terminology table, visual verification format, and specific test requirements to spec. Kept principles and process.
+**Amended**: 2026-02-24 — Added Architecture step to planning hierarchy. Updated Boundary Rule to use architecture terminology (Engine, Compiler, Calendar, API) instead of Layer 1/Layer 2. MAJOR version bump: Design Principle change.
 
 ---
 
@@ -18,21 +19,25 @@ The library ships with a greedy reference scheduler that demonstrates correct us
 
 ## 2. Planning Hierarchy
 
-This project uses a flat three-level cascade. Vision and Epic levels are not used — the project scope is sufficiently bounded that a single spec governs all work.
+This project uses a four-level cascade. Vision and Epic levels are not used — the project scope is sufficiently bounded that a single spec governs all work.
 
 ```
 Constitution    Project-wide principles and constraints (this document)
+  Architecture  Core abstractions, boundaries, engine interface
   Spec          What the library does — requirements and acceptance criteria
   Plan          How we will build it — phases and sequencing
   Tasks         Individual work items with acceptance criteria
   Retrospective What we learned (written after each phase)
 ```
 
+The architecture document sits between the constitution and the spec. It defines the core abstractions (Calendar, Compiler, Engine, API), their boundaries, and the engine interface. The spec references the architecture for structural decisions; the architecture references the constitution for principles.
+
 **Locations**:
 
 ```
 specs/
   constitution.md          ← this document
+  architecture.md          ← core abstractions and boundaries
   spec.md                  ← current active specification
   plan.md                  ← current execution plan
   tasks.md                 ← current task list
@@ -64,11 +69,11 @@ These are standing constraints. They apply to every spec, every implementation d
 
 **A layer's responsibility ends where a different kind of knowledge begins.**
 
-Two boundaries are defined and must be maintained:
+Two boundaries are defined and must be maintained. See `specs/architecture.md` Section 2.3 for the concrete definitions and the full abstraction stack.
 
-**The datetime boundary** sits at `OccupancyBitmap.from_calendar()`. Above it: shift patterns, exception dates, weekday rules, overnight periods — all resolved using Python datetime objects. Below it: integer arithmetic on a bytearray. After `from_calendar()` completes, no datetime object crosses into the engine.
+**The datetime boundary** sits at the compiler -- the process that transforms a calendar (rules + planned exceptions) into integer intervals at a given resolution. Above it: datetimes, dates, shift patterns, weekday rules. Below it: the engine, which operates on pure integers. After compilation, no datetime object crosses into the engine.
 
-**The primitives boundary** sits between mechanical slot-finding and policy decisions. The library answers: does this allocation fit, and if so, where? It does not answer: which operation goes next, or which resource to prefer. Those are policy questions requiring business knowledge the library does not have.
+**The primitives boundary** sits at the engine interface. Below it: mechanical slot-finding and state management. Above it: policy decisions (which operation next, which resource to prefer, whether to authorize overtime). The engine answers "does this fit, and where?" It does not answer "should we do this?" Those are policy questions requiring business knowledge the library does not have.
 
 ### II. Integer Time
 
@@ -111,7 +116,7 @@ This is not a nice-to-have. It exists because subtle errors in interval arithmet
 - Tests assert on behaviour, not implementation internals.
 - Each public function requires at least three distinct input/output cases before it can be considered tested.
 - Property-based tests (Hypothesis) are required for core algorithm functions. The spec identifies which functions.
-- Cross-layer consistency (Layer 1 datetime walk agrees with Layer 2 integer walk) must hold before any phase is declared complete. The spec defines the specific assertions.
+- Cross-boundary consistency (calendar-level datetime walk agrees with engine-level integer walk) must hold before any phase is declared complete. The spec defines the specific assertions.
 - Test fixtures are JSON and serve as the contract for any future port.
 
 ---
@@ -162,9 +167,10 @@ Specs and code live together on `main`.
 Before any session:
 
 1. Read this constitution.
-2. Read `specs/spec.md` for what is in scope.
-3. Read `specs/plan.md` for the current phase and sequence.
-4. Check `specs/tasks.md` for the current task status.
+2. Read `specs/architecture.md` for core abstractions and boundaries.
+3. Read `specs/spec.md` for what is in scope.
+4. Read `specs/plan.md` for the current phase and sequence.
+5. Check `specs/tasks.md` for the current task status.
 
 During implementation:
 

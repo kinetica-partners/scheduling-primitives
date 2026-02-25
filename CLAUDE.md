@@ -21,18 +21,30 @@ Always use venv.
 
 ## Architecture
 
-Greenfield — no code yet. Target structure from constitution:
+See `specs/architecture.md` for the full architecture document. Core abstractions:
+
+```
+Scheduling API           datetime in/out, user-facing
+    |
+Engine                   pure integer, the foundation (bitmap or interval list)
+    |
+Compiler                 calendar -> integer intervals (the datetime boundary)
+    |
+Calendar                 rules + planned exceptions (immutable configuration)
+```
+
+Source structure:
 
 ```
 src/scheduling_primitives/
-  calendar.py       Layer 1: WorkingCalendar (datetime-based, horizon-free)
-  occupancy.py      Layer 2: OccupancyBitmap, walk, allocate/deallocate (integer-based)
-  resolution.py     Boundary: TimeResolution (datetime ↔ int conversion)
+  calendar.py       Calendar: WorkingCalendar (datetime-based, horizon-free)
+  occupancy.py      Engine: OccupancyBitmap, walk, allocate/deallocate (integer-based)
+  resolution.py     Resolution: TimeResolution (datetime <-> int conversion)
   debug.py          Visual verification (show_ functions, not imported by production code)
   greedy.py         Reference scheduler (documentation in code form, not production)
 tests/
 data/               Test fixtures (JSON)
-specs/              Constitution, spec, plan, tasks
+specs/              Constitution, architecture, spec, plan, tasks
 docs/               Design references
 ```
 
@@ -47,7 +59,7 @@ Production scheduling. The library sits below dispatching and optimisation — i
 ## DO NOT
 
 - Add capabilities not in the spec. Flag and wait.
-- Import datetime objects into Layer 2 code. The boundary is `from_calendar()`.
+- Import datetime objects into engine code. The datetime boundary is at the compiler.
 - Use floats in engine code. Integer arithmetic only.
 - Use closed intervals. Everything is half-open `[begin, end)`.
 - Use `pip install` directly. UV only.
@@ -61,6 +73,7 @@ Run the speckit process: specify → clarify → plan → tasks. The v2 design d
 ## Navigation
 
 - `specs/constitution.md` — Governing principles and process (read first)
+- `specs/architecture.md` — Core abstractions, boundaries, engine interface
 - `docs/scheduling-primitives-spec-v2.md` — Design reference document (input for spec process, NOT the active spec)
 - `specs/spec.md` — Active specification (does not exist yet)
 - `specs/plan.md` — Execution plan (does not exist yet)
